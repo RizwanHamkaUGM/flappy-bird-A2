@@ -3,6 +3,7 @@ package entity;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
 public class Bird {
@@ -24,11 +25,16 @@ public class Bird {
     }
 
     private void loadImage(String imagePath) {
-        URL imageUrl = getClass().getResource(imagePath);
-        if (imageUrl == null) {
-            System.err.println(("Image not found: " + imagePath));
-        } else {
-            this.image = ImageIO.read(imageUrl);
+        try {
+            URL imageUrl = getClass().getResource(imagePath);
+            if (imageUrl == null) {
+                System.err.println("Gambar tidak ditemukan: " + imagePath);
+            } else {
+                this.image = ImageIO.read(imageUrl);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Kesalahan saat memuat gambar: " + imagePath);
         }
     }
 

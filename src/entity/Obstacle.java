@@ -1,5 +1,7 @@
 package entity;
 
+import ui.SkinSelector;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,26 +14,28 @@ public class Obstacle {
     private int width;
     private int height;
     private BufferedImage image;
+    int level;
 
-    public Obstacle(int x, int y, int width, int height, String ImagePath ) {
+    public Obstacle(int x, int y, int width, int height, int level ) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        loadimage(ImagePath);
+        loadImage(level);
     }
 
-    private void loadimage(String ImagePath) {
+    private void loadImage(int level) {
+        String skinPath = SkinSelector.getSkinObslevel(level);
         try {
-            URL imageUrl = getClass().getResource(ImagePath);
+            URL imageUrl = getClass().getResource(skinPath);
             if (imageUrl == null) {
-                System.err.println("Gambar tidak ditemukan: " + ImagePath);
+                System.err.println("Gambar tidak ditemukan: " + skinPath);
             } else {
                 this.image = ImageIO.read(imageUrl);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.err.println("Kesalahan saat memuat gambar: " + ImagePath);
+            System.err.println("Kesalahan saat memuat gambar: " + skinPath);
         }
     }
 

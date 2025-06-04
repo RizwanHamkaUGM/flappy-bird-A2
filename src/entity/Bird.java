@@ -1,8 +1,11 @@
 package entity;
 
+import ui.SkinSelector;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
 public class Bird {
@@ -10,27 +13,35 @@ public class Bird {
     private int width, height;
     private int yMotion;
     private BufferedImage image;
+    private int level;
 
     public static final int GRAVITY = 2;
     public static final int JUMP_STRENGTH = 10;
 
-    public Bird(int x, int y, int width, int height, String imagePath){
+    public Bird(int x, int y, int width, int height, int level ){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.yMotion = 0;
-        loadImage(imagePath);
+        loadImage(level);
     }
 
-    private void loadImage(String imagePath) {
-        URL imageUrl = getClass().getResource(imagePath);
-        if (imageUrl == null) {
-            System.err.println(("Image not found: " + imagePath));
-        } else {
-            this.image = ImageIO.read(imageUrl);
+    private void loadImage(int level) {
+        String skinPath = SkinSelector.getSkinBirdLevel(level);
+        try {
+            URL imageUrl = getClass().getResource(skinPath);
+            if (imageUrl == null) {
+                System.err.println("Gambar tidak ditemukan: " + skinPath);
+            } else {
+                this.image = ImageIO.read(imageUrl);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Kesalahan saat memuat gambar: " + skinPath);
         }
     }
+
 
     public void jump() {
         if (yMotion > 0) {
